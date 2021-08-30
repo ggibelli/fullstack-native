@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
+import AppBar from './AppBar';
 import RepositoryList from './RepositoryList';
-import Text from './Text';
+import { Route, Switch, Redirect } from 'react-router-native';
+import SignIn from './SignIn';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,8 +15,16 @@ const styles = StyleSheet.create({
 const Main: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text>Rate Repository Application</Text>
-      <RepositoryList />
+      <AppBar />
+      <Switch>
+        <Route path="/" exact>
+          <RepositoryList />
+        </Route>
+        <Route path="/signin" exact>
+          <SignIn />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
     </View>
   );
 };
