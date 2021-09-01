@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
   },
+  error: {
+    borderColor: '#d73a4a',
+  },
 });
 
 export interface TextInputProps extends NativeTextInputProps {
@@ -23,7 +26,7 @@ export interface TextInputProps extends NativeTextInputProps {
 }
 
 const TextInput: React.FC<TextInputProps> = ({ style, error, ...props }) => {
-  const textInputStyle = [styles.input, style];
+  const textInputStyle = [styles.input, style, Boolean(error) && styles.error];
 
   return <NativeTextInput style={textInputStyle} {...props} />;
 };
