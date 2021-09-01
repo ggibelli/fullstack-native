@@ -1,6 +1,7 @@
 import * as React from 'react';
 // import Constants from 'expo-constants';
 import { ListRenderItemInfo, View, Image, StyleSheet } from 'react-native';
+import { Repository } from '../generated/graphql';
 import theme from '../theme';
 import Text from './Text';
 
@@ -43,19 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props {
-  id: string;
-  fullName: string;
-  description: string;
-  language: string;
-  forksCount: number;
-  stargazersCount: number;
-  ratingAverage: number;
-  reviewCount: number;
-  ownerAvatarUrl: string;
-}
-
-const RepositoryItem: React.FC<ListRenderItemInfo<Props>> = ({ item }) => {
+const RepositoryItem: React.FC<ListRenderItemInfo<Repository>> = ({ item }) => {
   const kSuffixCount = (number: number): string => {
     if (number > 999) {
       return `${(number / 1000).toFixed(1)}k`;
@@ -68,7 +57,7 @@ const RepositoryItem: React.FC<ListRenderItemInfo<Props>> = ({ item }) => {
         <Image
           style={styles.avatar}
           source={{
-            uri: item.ownerAvatarUrl,
+            uri: item.ownerAvatarUrl as string,
           }}
         />
         <View style={styles.flexContainerTextsTop}>
@@ -83,11 +72,11 @@ const RepositoryItem: React.FC<ListRenderItemInfo<Props>> = ({ item }) => {
       </View>
       <View style={styles.flexContainerBottom}>
         <View style={styles.flexContainerTextsBottom}>
-          <Text fontWeight="bold">{kSuffixCount(item.stargazersCount)}</Text>
+          <Text fontWeight="bold">{kSuffixCount(item.stargazersCount as number)}</Text>
           <Text>Stars</Text>
         </View>
         <View style={styles.flexContainerTextsBottom}>
-          <Text fontWeight="bold">{kSuffixCount(item.forksCount)}</Text>
+          <Text fontWeight="bold">{kSuffixCount(item.forksCount as number)}</Text>
           <Text>Forks</Text>
         </View>
         <View style={styles.flexContainerTextsBottom}>
