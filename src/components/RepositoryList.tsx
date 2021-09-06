@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { Repository } from '../generated/graphql';
-import useRepositories from './hooks/useRepositories';
+import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({

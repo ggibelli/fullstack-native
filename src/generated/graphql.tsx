@@ -222,10 +222,23 @@ export type UserEdge = {
 
 export type RepositoryDetailFragment = { __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string> };
 
+export type AuthorizeMutationVariables = Exact<{
+  username: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type AuthorizeMutation = { __typename?: 'Mutation', authorize?: Maybe<{ __typename?: 'AuthorizationPayload', accessToken: string }> };
+
 export type RepositoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type RepositoriesQuery = { __typename?: 'Query', repositories: { __typename?: 'RepositoryConnection', edges: Array<{ __typename?: 'RepositoryEdge', node: { __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string> } }> } };
+
+export type AuthUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AuthUserQuery = { __typename?: 'Query', authorizedUser?: Maybe<{ __typename?: 'User', id: string, username: string }> };
 
 export const RepositoryDetailFragmentDoc = gql`
     fragment RepositoryDetail on Repository {
@@ -240,6 +253,40 @@ export const RepositoryDetailFragmentDoc = gql`
   ownerAvatarUrl
 }
     `;
+export const AuthorizeDocument = gql`
+    mutation authorize($username: String!, $password: String!) {
+  authorize(credentials: {username: $username, password: $password}) {
+    accessToken
+  }
+}
+    `;
+export type AuthorizeMutationFn = Apollo.MutationFunction<AuthorizeMutation, AuthorizeMutationVariables>;
+
+/**
+ * __useAuthorizeMutation__
+ *
+ * To run a mutation, you first call `useAuthorizeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAuthorizeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [authorizeMutation, { data, loading, error }] = useAuthorizeMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useAuthorizeMutation(baseOptions?: Apollo.MutationHookOptions<AuthorizeMutation, AuthorizeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AuthorizeMutation, AuthorizeMutationVariables>(AuthorizeDocument, options);
+      }
+export type AuthorizeMutationHookResult = ReturnType<typeof useAuthorizeMutation>;
+export type AuthorizeMutationResult = Apollo.MutationResult<AuthorizeMutation>;
+export type AuthorizeMutationOptions = Apollo.BaseMutationOptions<AuthorizeMutation, AuthorizeMutationVariables>;
 export const RepositoriesDocument = gql`
     query Repositories {
   repositories {
@@ -286,3 +333,38 @@ export function useRepositoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type RepositoriesQueryHookResult = ReturnType<typeof useRepositoriesQuery>;
 export type RepositoriesLazyQueryHookResult = ReturnType<typeof useRepositoriesLazyQuery>;
 export type RepositoriesQueryResult = Apollo.QueryResult<RepositoriesQuery, RepositoriesQueryVariables>;
+export const AuthUserDocument = gql`
+    query AuthUser {
+  authorizedUser {
+    id
+    username
+  }
+}
+    `;
+
+/**
+ * __useAuthUserQuery__
+ *
+ * To run a query within a React component, call `useAuthUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAuthUserQuery(baseOptions?: Apollo.QueryHookOptions<AuthUserQuery, AuthUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AuthUserQuery, AuthUserQueryVariables>(AuthUserDocument, options);
+      }
+export function useAuthUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AuthUserQuery, AuthUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AuthUserQuery, AuthUserQueryVariables>(AuthUserDocument, options);
+        }
+export type AuthUserQueryHookResult = ReturnType<typeof useAuthUserQuery>;
+export type AuthUserLazyQueryHookResult = ReturnType<typeof useAuthUserLazyQuery>;
+export type AuthUserQueryResult = Apollo.QueryResult<AuthUserQuery, AuthUserQueryVariables>;
