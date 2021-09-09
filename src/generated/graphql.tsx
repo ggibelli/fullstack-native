@@ -240,6 +240,13 @@ export type AuthUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AuthUserQuery = { __typename?: 'Query', authorizedUser?: Maybe<{ __typename?: 'User', id: string, username: string }> };
 
+export type RepositoryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type RepositoryQuery = { __typename?: 'Query', repository?: Maybe<{ __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string>, url?: Maybe<string> }> };
+
 export const RepositoryDetailFragmentDoc = gql`
     fragment RepositoryDetail on Repository {
   id
@@ -368,3 +375,47 @@ export function useAuthUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<A
 export type AuthUserQueryHookResult = ReturnType<typeof useAuthUserQuery>;
 export type AuthUserLazyQueryHookResult = ReturnType<typeof useAuthUserLazyQuery>;
 export type AuthUserQueryResult = Apollo.QueryResult<AuthUserQuery, AuthUserQueryVariables>;
+export const RepositoryDocument = gql`
+    query Repository($id: ID!) {
+  repository(id: $id) {
+    id
+    fullName
+    description
+    language
+    forksCount
+    stargazersCount
+    ratingAverage
+    reviewCount
+    ownerAvatarUrl
+    url
+  }
+}
+    `;
+
+/**
+ * __useRepositoryQuery__
+ *
+ * To run a query within a React component, call `useRepositoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRepositoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRepositoryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRepositoryQuery(baseOptions: Apollo.QueryHookOptions<RepositoryQuery, RepositoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, options);
+      }
+export function useRepositoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RepositoryQuery, RepositoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, options);
+        }
+export type RepositoryQueryHookResult = ReturnType<typeof useRepositoryQuery>;
+export type RepositoryLazyQueryHookResult = ReturnType<typeof useRepositoryLazyQuery>;
+export type RepositoryQueryResult = Apollo.QueryResult<RepositoryQuery, RepositoryQueryVariables>;
