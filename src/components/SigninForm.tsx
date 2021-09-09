@@ -25,9 +25,15 @@ const styles = StyleSheet.create({
 const SigninForm: React.FC<{ onSubmit: () => void }> = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <FormikTextInput style={styles.item} name="username" placeholder="Username" />
-      <FormikTextInput style={styles.item} secureTextEntry name="password" placeholder="Password" />
-      <Pressable style={styles.item} onPress={onSubmit}>
+      <FormikTextInput testID="user" style={styles.item} name="username" placeholder="Username" />
+      <FormikTextInput
+        testID="password"
+        style={styles.item}
+        secureTextEntry
+        name="password"
+        placeholder="Password"
+      />
+      <Pressable testID="submit" style={styles.item} onPress={onSubmit}>
         <Text style={styles.text}>Sign In</Text>
       </Pressable>
     </View>

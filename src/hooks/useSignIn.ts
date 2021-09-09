@@ -1,4 +1,4 @@
-import { FetchResult, MutationResult } from '@apollo/client';
+import { MutationResult } from '@apollo/client';
 import * as React from 'react';
 import { AuthorizeMutation, useAuthorizeMutation } from '../generated/graphql';
 import useAuthStorage from './useAuthStorage';

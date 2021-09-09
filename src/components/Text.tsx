@@ -29,6 +29,7 @@ interface Props {
   fontSize?: string;
   fontWeight?: string;
   style?: StyleProp<TextStyle>;
+  testID?: string;
 }
 
 const Text: React.FC<Props> = ({ color, fontSize, fontWeight, style, ...props }) => {

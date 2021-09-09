@@ -6,9 +6,9 @@ const useRepositories = () => {
     fetchPolicy: 'cache-and-network',
     onCompleted: ({ repositories }) => setRepositories(repositories),
   });
-  const [repositories, setRepositories] = React.useState<null | RepositoriesQuery['repositories']>(
-    null,
-  );
+  const [repositories, setRepositories] = React.useState<
+    undefined | RepositoriesQuery['repositories']
+  >(data?.repositories);
 
   return {
     repositories,

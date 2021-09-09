@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { useHistory } from 'react-router-native';
 import SigninForm from './SigninForm';
 import useSignIn from '../hooks/useSignIn';
+import SignInContainer from './SignInContainer';
 
 const initialValues = {
   username: '',
@@ -29,11 +30,7 @@ const SignIn: React.FC = () => {
     }
   };
 
-  return (
-    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-      {({ handleSubmit }) => <SigninForm onSubmit={handleSubmit} />}
-    </Formik>
-  );
+  return <SignInContainer handleSubmit={onSubmit} />;
 };
 
 export default SignIn;

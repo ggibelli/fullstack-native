@@ -55,36 +55,47 @@ const RepositoryItem: React.FC<ListRenderItemInfo<Repository>> = ({ item }) => {
     <>
       <View style={styles.flexContainerTop}>
         <Image
+          testID="avatar"
           style={styles.avatar}
           source={{
             uri: item.ownerAvatarUrl as string,
           }}
         />
         <View style={styles.flexContainerTextsTop}>
-          <Text style={styles.textItem} fontWeight="bold">
+          <Text testID="full-name" style={styles.textItem} fontWeight="bold">
             {item.fullName}
           </Text>
-          <Text style={styles.textItem} color="textSecondary">
+          <Text testID="description" style={styles.textItem} color="textSecondary">
             {item.description}
           </Text>
-          <Text style={styles.language}>{item.language}</Text>
+          <Text testID="language" style={styles.language}>
+            {item.language}
+          </Text>
         </View>
       </View>
       <View style={styles.flexContainerBottom}>
         <View style={styles.flexContainerTextsBottom}>
-          <Text fontWeight="bold">{kSuffixCount(item.stargazersCount as number)}</Text>
+          <Text testID="stars" fontWeight="bold">
+            {kSuffixCount(item.stargazersCount as number)}
+          </Text>
           <Text>Stars</Text>
         </View>
         <View style={styles.flexContainerTextsBottom}>
-          <Text fontWeight="bold">{kSuffixCount(item.forksCount as number)}</Text>
+          <Text testID="forks" fontWeight="bold">
+            {kSuffixCount(item.forksCount as number)}
+          </Text>
           <Text>Forks</Text>
         </View>
         <View style={styles.flexContainerTextsBottom}>
-          <Text fontWeight="bold">{kSuffixCount(item.reviewCount)}</Text>
+          <Text testID="reviews" fontWeight="bold">
+            {kSuffixCount(item.reviewCount)}
+          </Text>
           <Text>Reviews</Text>
         </View>
         <View style={styles.flexContainerTextsBottom}>
-          <Text fontWeight="bold">{kSuffixCount(item.ratingAverage)}</Text>
+          <Text testID="rating" fontWeight="bold">
+            {kSuffixCount(item.ratingAverage)}
+          </Text>
           <Text>Rating</Text>
         </View>
       </View>
