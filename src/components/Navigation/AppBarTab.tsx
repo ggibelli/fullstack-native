@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import Text from './Text';
+import Text from '../Text';
 import Constants from 'expo-constants';
-import theme from '../theme';
+import theme from '../../theme';
 import { Link } from 'react-router-native';
 // import theme from '../theme';
 

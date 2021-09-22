@@ -34,7 +34,6 @@ const useSignIn = (): [
       throw new Error('qualcosa di brutto');
     }
     return data;
-    // call the mutate function here with the right arguments
   };
 
   return [signIn, result];

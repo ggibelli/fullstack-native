@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useHistory } from 'react-router-native';
 import SigninForm from './SigninForm';
-import useSignIn from '../hooks/useSignIn';
 
 const initialValues = {
   username: '',

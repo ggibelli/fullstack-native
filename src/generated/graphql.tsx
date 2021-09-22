@@ -230,6 +230,13 @@ export type AuthorizeMutationVariables = Exact<{
 
 export type AuthorizeMutation = { __typename?: 'Mutation', authorize?: Maybe<{ __typename?: 'AuthorizationPayload', accessToken: string }> };
 
+export type CreateReviewMutationVariables = Exact<{
+  review?: Maybe<CreateReviewInput>;
+}>;
+
+
+export type CreateReviewMutation = { __typename?: 'Mutation', createReview?: Maybe<{ __typename?: 'Review', id: string, rating: number, text?: Maybe<string>, repositoryId: string }> };
+
 export type RepositoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -245,7 +252,7 @@ export type RepositoryQueryVariables = Exact<{
 }>;
 
 
-export type RepositoryQuery = { __typename?: 'Query', repository?: Maybe<{ __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string>, url?: Maybe<string> }> };
+export type RepositoryQuery = { __typename?: 'Query', repository?: Maybe<{ __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string>, url?: Maybe<string>, reviews: { __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string, text?: Maybe<string>, rating: number, createdAt: any, user: { __typename?: 'User', id: string, username: string } } }> } }> };
 
 export const RepositoryDetailFragmentDoc = gql`
     fragment RepositoryDetail on Repository {
@@ -294,6 +301,42 @@ export function useAuthorizeMutation(baseOptions?: Apollo.MutationHookOptions<Au
 export type AuthorizeMutationHookResult = ReturnType<typeof useAuthorizeMutation>;
 export type AuthorizeMutationResult = Apollo.MutationResult<AuthorizeMutation>;
 export type AuthorizeMutationOptions = Apollo.BaseMutationOptions<AuthorizeMutation, AuthorizeMutationVariables>;
+export const CreateReviewDocument = gql`
+    mutation CreateReview($review: CreateReviewInput) {
+  createReview(review: $review) {
+    id
+    rating
+    text
+    repositoryId
+  }
+}
+    `;
+export type CreateReviewMutationFn = Apollo.MutationFunction<CreateReviewMutation, CreateReviewMutationVariables>;
+
+/**
+ * __useCreateReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createReviewMutation, { data, loading, error }] = useCreateReviewMutation({
+ *   variables: {
+ *      review: // value for 'review'
+ *   },
+ * });
+ */
+export function useCreateReviewMutation(baseOptions?: Apollo.MutationHookOptions<CreateReviewMutation, CreateReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateReviewMutation, CreateReviewMutationVariables>(CreateReviewDocument, options);
+      }
+export type CreateReviewMutationHookResult = ReturnType<typeof useCreateReviewMutation>;
+export type CreateReviewMutationResult = Apollo.MutationResult<CreateReviewMutation>;
+export type CreateReviewMutationOptions = Apollo.BaseMutationOptions<CreateReviewMutation, CreateReviewMutationVariables>;
 export const RepositoriesDocument = gql`
     query Repositories {
   repositories {
@@ -380,6 +423,20 @@ export const RepositoryDocument = gql`
   repository(id: $id) {
     id
     fullName
+    reviews {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          user {
+            id
+            username
+          }
+        }
+      }
+    }
     description
     language
     forksCount
