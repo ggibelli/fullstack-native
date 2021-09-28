@@ -7,6 +7,7 @@ import SignIn from './SignIn';
 import SingleRepository from './SingleRepository';
 import CreateReview from './CreateReview';
 import { useAuthUserQuery } from '../generated/graphql';
+import SignUp from './SignUp';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,9 +31,12 @@ const Main: React.FC = () => {
           {Boolean(!loggedIn) ? <Redirect to="/signin" /> : <CreateReview />}
         </Route>
         <Route path="/signin" exact>
-          <SignIn />
+          {Boolean(loggedIn) ? <Redirect to="/" /> : <SignIn />}
         </Route>
 
+        <Route path="/signup" exact>
+          {Boolean(loggedIn) ? <Redirect to="/" /> : <SignUp />}
+        </Route>
         <Route path="/:id" exact>
           <SingleRepository />
         </Route>

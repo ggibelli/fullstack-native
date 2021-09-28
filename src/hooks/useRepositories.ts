@@ -1,18 +1,30 @@
 import * as React from 'react';
+import { IOrder } from '../components/RepositoryList';
 import { RepositoriesQuery, useRepositoriesQuery } from '../generated/graphql';
 
-const useRepositories = () => {
-  const { data, loading, error } = useRepositoriesQuery({
+const useRepositories = (variables) => {
+  const { data, loading, error, fetchMore, ...result } = useRepositoriesQuery({
+    variables,
     fetchPolicy: 'cache-and-network',
-    onCompleted: ({ repositories }) => setRepositories(repositories),
   });
-  const [repositories, setRepositories] = React.useState<
-    undefined | RepositoriesQuery['repositories']
-  >(data?.repositories);
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+    console.log(canFetchMore);
+    if (!canFetchMore) return;
+
+    return fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...variables,
+      },
+    });
+  };
 
   return {
-    repositories,
+    repositories: data?.repositories,
     loading,
+    fetchMore: handleFetchMore,
+    ...result,
   };
 };
 

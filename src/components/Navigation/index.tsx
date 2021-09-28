@@ -40,7 +40,10 @@ const AppBar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
             <LogoutTab handleLogout={handleLogout} />
           </>
         ) : (
-          <AppBarTab text="Sign In" link="/signin" />
+          <>
+            <AppBarTab text="Sign In" link="/signin" />
+            <AppBarTab text="Sign Up" link="/signup" />
+          </>
         )}
       </ScrollView>
     </View>
