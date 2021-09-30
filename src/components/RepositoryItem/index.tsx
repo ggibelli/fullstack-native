@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import Constants from 'expo-constants';
 import { ListRenderItemInfo } from 'react-native';
 import { Repository } from '../../generated/graphql';
 import { Link } from 'react-router-native';

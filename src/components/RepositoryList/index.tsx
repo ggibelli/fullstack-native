@@ -21,12 +21,11 @@ const RepositoryList: React.FC = () => {
     orderDirection: order.orderDirection ? order.orderDirection : undefined,
     orderBy: order.orderBy ? order.orderBy : undefined,
     searchKeyword: debouncedFilter,
-    first: 6,
+    first: 8,
   });
 
   const onEndReach = () => {
     fetchMore();
-    console.log('fetched');
   };
 
   return (

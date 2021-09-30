@@ -23,7 +23,7 @@ const validationSchema = yup.object().shape({
   rating: yup
     .number()
     .moreThan(0, 'Min number is 0')
-    .lessThan(100, 'Max number is 100')
+    .lessThan(101, 'Max number is 100')
     .required('Rating is required'),
 });
 

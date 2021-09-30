@@ -244,27 +244,41 @@ export type CreateUserMutationVariables = Exact<{
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser?: Maybe<{ __typename?: 'User', id: string, username: string }> };
 
+export type DeleteReviewMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteReviewMutation = { __typename?: 'Mutation', deleteReview?: Maybe<boolean> };
+
 export type RepositoriesQueryVariables = Exact<{
   orderDirection?: Maybe<OrderDirection>;
   orderBy?: Maybe<AllRepositoriesOrderBy>;
   searchKeyword?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
 }>;
 
 
 export type RepositoriesQuery = { __typename?: 'Query', repositories: { __typename?: 'RepositoryConnection', edges: Array<{ __typename?: 'RepositoryEdge', node: { __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string> } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean } } };
 
-export type AuthUserQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AuthUserQuery = { __typename?: 'Query', authorizedUser?: Maybe<{ __typename?: 'User', id: string, username: string }> };
-
-export type RepositoryQueryVariables = Exact<{
-  id: Scalars['ID'];
+export type AuthUserQueryVariables = Exact<{
+  includeReviews?: Maybe<Scalars['Boolean']>;
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type RepositoryQuery = { __typename?: 'Query', repository?: Maybe<{ __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string>, url?: Maybe<string>, reviews: { __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string, text?: Maybe<string>, rating: number, createdAt: any, user: { __typename?: 'User', id: string, username: string } } }> } }> };
+export type AuthUserQuery = { __typename?: 'Query', authorizedUser?: Maybe<{ __typename?: 'User', id: string, username: string, reviews?: Maybe<{ __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string, text?: Maybe<string>, rating: number, createdAt: any, repository: { __typename?: 'Repository', fullName: string, id: string } } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean } }> }> };
+
+export type RepositoryQueryVariables = Exact<{
+  id: Scalars['ID'];
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type RepositoryQuery = { __typename?: 'Query', repository?: Maybe<{ __typename?: 'Repository', id: string, fullName: string, description?: Maybe<string>, language?: Maybe<string>, forksCount?: Maybe<number>, stargazersCount?: Maybe<number>, ratingAverage: number, reviewCount: number, ownerAvatarUrl?: Maybe<string>, url?: Maybe<string>, reviews: { __typename?: 'ReviewConnection', edges: Array<{ __typename?: 'ReviewEdge', node: { __typename?: 'Review', id: string, text?: Maybe<string>, rating: number, createdAt: any, user: { __typename?: 'User', id: string, username: string }, repository: { __typename?: 'Repository', fullName: string } } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean } } }> };
 
 export const RepositoryDetailFragmentDoc = gql`
     fragment RepositoryDetail on Repository {
@@ -383,13 +397,45 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteReviewDocument = gql`
+    mutation DeleteReview($id: ID!) {
+  deleteReview(id: $id)
+}
+    `;
+export type DeleteReviewMutationFn = Apollo.MutationFunction<DeleteReviewMutation, DeleteReviewMutationVariables>;
+
+/**
+ * __useDeleteReviewMutation__
+ *
+ * To run a mutation, you first call `useDeleteReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteReviewMutation, { data, loading, error }] = useDeleteReviewMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteReviewMutation(baseOptions?: Apollo.MutationHookOptions<DeleteReviewMutation, DeleteReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteReviewMutation, DeleteReviewMutationVariables>(DeleteReviewDocument, options);
+      }
+export type DeleteReviewMutationHookResult = ReturnType<typeof useDeleteReviewMutation>;
+export type DeleteReviewMutationResult = Apollo.MutationResult<DeleteReviewMutation>;
+export type DeleteReviewMutationOptions = Apollo.BaseMutationOptions<DeleteReviewMutation, DeleteReviewMutationVariables>;
 export const RepositoriesDocument = gql`
-    query Repositories($orderDirection: OrderDirection, $orderBy: AllRepositoriesOrderBy, $searchKeyword: String, $first: Int) {
+    query Repositories($orderDirection: OrderDirection, $orderBy: AllRepositoriesOrderBy, $searchKeyword: String, $first: Int, $after: String) {
   repositories(
     orderDirection: $orderDirection
     orderBy: $orderBy
     searchKeyword: $searchKeyword
     first: $first
+    after: $after
   ) {
     edges {
       node {
@@ -428,6 +474,7 @@ export const RepositoriesDocument = gql`
  *      orderBy: // value for 'orderBy'
  *      searchKeyword: // value for 'searchKeyword'
  *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -443,10 +490,28 @@ export type RepositoriesQueryHookResult = ReturnType<typeof useRepositoriesQuery
 export type RepositoriesLazyQueryHookResult = ReturnType<typeof useRepositoriesLazyQuery>;
 export type RepositoriesQueryResult = Apollo.QueryResult<RepositoriesQuery, RepositoriesQueryVariables>;
 export const AuthUserDocument = gql`
-    query AuthUser {
+    query AuthUser($includeReviews: Boolean = false, $first: Int, $after: String) {
   authorizedUser {
     id
     username
+    reviews(first: $first, after: $after) @include(if: $includeReviews) {
+      edges {
+        node {
+          id
+          text
+          rating
+          createdAt
+          repository {
+            fullName
+            id
+          }
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
   }
 }
     `;
@@ -463,6 +528,9 @@ export const AuthUserDocument = gql`
  * @example
  * const { data, loading, error } = useAuthUserQuery({
  *   variables: {
+ *      includeReviews: // value for 'includeReviews'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */
@@ -478,11 +546,11 @@ export type AuthUserQueryHookResult = ReturnType<typeof useAuthUserQuery>;
 export type AuthUserLazyQueryHookResult = ReturnType<typeof useAuthUserLazyQuery>;
 export type AuthUserQueryResult = Apollo.QueryResult<AuthUserQuery, AuthUserQueryVariables>;
 export const RepositoryDocument = gql`
-    query Repository($id: ID!) {
+    query Repository($id: ID!, $first: Int, $after: String) {
   repository(id: $id) {
     id
     fullName
-    reviews {
+    reviews(first: $first, after: $after) {
       edges {
         node {
           id
@@ -493,7 +561,14 @@ export const RepositoryDocument = gql`
             id
             username
           }
+          repository {
+            fullName
+          }
         }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
     description
@@ -521,6 +596,8 @@ export const RepositoryDocument = gql`
  * const { data, loading, error } = useRepositoryQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
  *   },
  * });
  */

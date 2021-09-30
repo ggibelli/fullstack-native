@@ -6,15 +6,14 @@ import { AllRepositoriesOrderBy, OrderDirection } from '../../generated/graphql'
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    margin: 5,
+    margin: 10,
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
-    // borderWidth: 1,
-    // borderColor: 'gray',
     borderRadius: 4,
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    backgroundColor: 'white',
+    paddingRight: 30,
   },
   inputAndroid: {
     fontSize: 16,
@@ -24,7 +23,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: 'purple',
     borderRadius: 8,
     color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+    paddingRight: 30,
   },
 });
 

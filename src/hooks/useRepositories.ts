@@ -1,18 +1,22 @@
 import * as React from 'react';
-import { IOrder } from '../components/RepositoryList';
-import { RepositoriesQuery, useRepositoriesQuery } from '../generated/graphql';
+import { AllRepositoriesOrderBy, OrderDirection, useRepositoriesQuery } from '../generated/graphql';
 
-const useRepositories = (variables) => {
+interface Args {
+  orderDirection?: OrderDirection;
+  orderBy?: AllRepositoriesOrderBy;
+  searchKeyword?: string;
+  first?: number;
+}
+
+const useRepositories = (variables: Args) => {
   const { data, loading, error, fetchMore, ...result } = useRepositoriesQuery({
     variables,
     fetchPolicy: 'cache-and-network',
   });
   const handleFetchMore = () => {
     const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
-    console.log(canFetchMore);
     if (!canFetchMore) return;
-
-    return fetchMore({
+    fetchMore({
       variables: {
         after: data.repositories.pageInfo.endCursor,
         ...variables,

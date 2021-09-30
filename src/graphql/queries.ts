@@ -6,12 +6,14 @@ export const GET_REPOSITORIES = gql`
     $orderBy: AllRepositoriesOrderBy
     $searchKeyword: String
     $first: Int
+    $after: String
   ) {
     repositories(
       orderDirection: $orderDirection
       orderBy: $orderBy
       searchKeyword: $searchKeyword
       first: $first
+      after: $after
     ) {
       edges {
         node {
@@ -35,20 +37,38 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const GET_AUTH_USER = gql`
-  query AuthUser {
+  query AuthUser($includeReviews: Boolean = false, $first: Int, $after: String) {
     authorizedUser {
       id
       username
+      reviews(first: $first, after: $after) @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            repository {
+              fullName
+              id
+            }
+          }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
+      }
     }
   }
 `;
 
 export const REPOSITORY = gql`
-  query Repository($id: ID!) {
+  query Repository($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       id
       fullName
-      reviews {
+      reviews(first: $first, after: $after) {
         edges {
           node {
             id
@@ -59,7 +79,14 @@ export const REPOSITORY = gql`
               id
               username
             }
+            repository {
+              fullName
+            }
           }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
         }
       }
       description

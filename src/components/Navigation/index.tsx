@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import theme from '../../theme';
 import AppBarTab from './AppBarTab';
@@ -36,7 +36,7 @@ const AppBar: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
         {isLoggedIn ? (
           <>
             <AppBarTab text="Create Review" link="/create-review" />
-
+            <AppBarTab text="My Reviews" link="/my-reviews" />
             <LogoutTab handleLogout={handleLogout} />
           </>
         ) : (

@@ -1,6 +1,5 @@
 import * as React from 'react';
-// import Constants from 'expo-constants';
-import { View, Image, StyleSheet, Pressable, FlatList } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import { RepositoryQuery } from '../../generated/graphql';
 import theme from '../../theme';
 import Text from '../Text';
@@ -31,7 +30,6 @@ const styles = StyleSheet.create({
   },
   flexContainerBottom: {
     flexDirection: 'row',
-    // padding: 5,
     justifyContent: 'space-around',
   },
   flexContainerTextsBottom: {

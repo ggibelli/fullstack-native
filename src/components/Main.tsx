@@ -6,8 +6,9 @@ import { Route, Switch, Redirect } from 'react-router-native';
 import SignIn from './SignIn';
 import SingleRepository from './SingleRepository';
 import CreateReview from './CreateReview';
-import { useAuthUserQuery } from '../generated/graphql';
 import SignUp from './SignUp';
+import useAuthorizedUser from '../hooks/useAuthorizedUser';
+import MyReviews from './MyReviews';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,8 +18,8 @@ const styles = StyleSheet.create({
 });
 
 const Main: React.FC = () => {
-  const { data } = useAuthUserQuery();
-  const loggedIn = data?.authorizedUser?.id;
+  const { user } = useAuthorizedUser({});
+  const loggedIn = user?.id;
 
   return (
     <View style={styles.container}>
@@ -29,6 +30,9 @@ const Main: React.FC = () => {
         </Route>
         <Route path="/create-review" exact>
           {Boolean(!loggedIn) ? <Redirect to="/signin" /> : <CreateReview />}
+        </Route>
+        <Route path="/my-reviews" exact>
+          {Boolean(!loggedIn) ? <Redirect to="/signin" /> : <MyReviews />}
         </Route>
         <Route path="/signin" exact>
           {Boolean(loggedIn) ? <Redirect to="/" /> : <SignIn />}
